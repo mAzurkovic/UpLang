@@ -3,14 +3,29 @@ import java.util.*;
 
 public class up {
 
-	public static void main(String[] args) {
-		getFile(args[0]);
-	}
-
+	// Public variables and usages.
+	public static List<String> tokens = new ArrayList<String>();
 	public static String upMessage = "<UpLang> Message: ";
 
-	private static ArrayList<String> lex(String line) {
-		List<String> tokens = new ArrayList<String>();
+	//**********************************************//
+	//				Initializer Method				//
+	//**********************************************//
+	public static void main(String[] args) {
+		getFile(args[0]); // Lexical analysis gets called from within getFile() method
+	}
+
+	private static void parser(List<String> tokenValues) {
+		tokenValues = new ArrayList<String>();
+		int i = 0; // Counter for iteration
+		while (i < tokenValues.size()) {
+			System.out.println(i);
+		}		
+	}
+
+	//**********************************************//
+	//				Lexical Analysis 				//
+	//**********************************************//
+	private static void lex(String line) {
 		String tok = new String();
 		String string = new String();
 		boolean spaces = true;
@@ -35,15 +50,14 @@ public class up {
 			}
 
 			tok += currTok;
-			System.out.println(tok);
-			spaces = true;
 		}
-		// System.out.println(line);
 		tokens.add("STRING: " + string + "\"");
-		System.out.println(tokens);
-		return null;
+		parser(tokens);
 	}
 
+	//**********************************************//
+	//		 	  Retreving File Contents 	     	//
+	//**********************************************//
 	private static String getFile(String fileName) {
 		String file = new String();
 		String line = null;
