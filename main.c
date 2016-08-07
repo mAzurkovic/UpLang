@@ -48,6 +48,7 @@ void strAppend(char targetArray[2048], char obj) {
 char* lex(char contents[2048]) {
 	int i;
 	int len;
+	int newLine = 1;
 	char currTok[2048];
 	char* tokPointer = currTok;
 	char curr; // Current character that is being read
@@ -57,21 +58,21 @@ char* lex(char contents[2048]) {
 			memmove(&contents[i], &contents[i + 1], strlen(contents) - i);
 		}
 
+		if (contents[i] == '\n') { contents[i] = 0; }
+
 		len = strlen(currTok);
 		currTok[len] = contents[i];
 		currTok[len + 1] = 0;
 		currTok[0] = ':';
 		
-		printf("%s\n", currTok);
+		//printf("%s\n", currTok);
 
 		if (!strcmp(currTok, ":PRINT")) {
-			int length;
-			length = strlen(tokens[i]);
-			tokens[length] = "PRINT";
 			//strAppend(tokens[length + 1], 'h');
 			//strcpy(tokens, ":PRINT");
 			printf("PRINT detected\n");
 		}
+
 	}
 
 	printf("%s\n", contents);
