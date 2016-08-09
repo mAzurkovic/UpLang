@@ -1,6 +1,8 @@
 import java.io.*;
 import java.util.*;
 import java.util.Scanner;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptEngine;
 
 public class up {
 
@@ -12,17 +14,22 @@ public class up {
  *                                INITIALIZE
  * ============================================================================
  */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		//String ret = getFile(args[0]); // Lexical analysis gets called from within getFile() method
 		// lexed = lex(ret);
 		// String content = new Scanner(new File(args[0])).useDelimiter("\\Z").next();
 
 		List<String> fileRead = new ArrayList<String>();
 		List<String> lexed = new ArrayList<String>();
-		
+
 		fileRead = getFile(args[0]);
 		lexed = lex(fileRead);
 		parser(lexed);
+
+		ScriptEngineManager mgr = new ScriptEngineManager();
+    	ScriptEngine engine = mgr.getEngineByName("JavaScript");
+    	String foo = "40+2";
+    	System.out.println(engine.eval("40+2"));
 	}
 
 /**
@@ -31,16 +38,19 @@ public class up {
  * ============================================================================
  */
 	private static void parser(List<String> tokenValues) {
+		String printAns = new String();
 		for (int i = 0; i < tokenValues.size(); i++) {
 			// Print function:
 			if (tokenValues.get(i) == "PRINT") {
-				// Variable acts as a staging place to remove keywords from the lex values.
-				String interm = tokenValues.get(i + 1).replaceAll("STRING:", "");
-			 	String printVal = interm.replaceAll("\"", "");
+				String value = tokenValues.get(i + 1);
+				// Define start and end indexes of value that needs to be printed
+				int startIndex = value.indexOf(":") + 1;
+				int endIndex = value.length();
+				printAns = value.substring(startIndex, endIndex);
 				// Execute intended PRINT command
-				System.out.println(printVal);
+				System.out.println(printAns.replaceAll("\"", ""));
 			}
-		}		
+		}
 	}
 
 /**
@@ -83,8 +93,8 @@ public class up {
 					tok = "";
 				} else if (tok.equals("\"")) {
 					if (!findString) { findString = true; }
-					else if (findString) { 
-						findString = false; 
+					else if (findString) {
+						findString = false;
 						tokens.add("STRING:" + string + "\"");
 						string = "";
 					}
@@ -136,19 +146,19 @@ public class up {
             while((line = bufferedReader.readLine()) != null) {
             	// file += line;
             	fileContents.add(line);
-            }   
+            }
             // Always close files.
             bufferedReader.close();
         }
 
         catch(FileNotFoundException ex) {
             System.out.println(
-                "Unable to open file '" + fileName + "'");                
+                "Unable to open file '" + fileName + "'");
         }
 
         catch(IOException ex) {
             System.out.println(
-                "Error reading file '" + fileName + "'");      
+                "Error reading file '" + fileName + "'");
         }
         return fileContents;
 	}
