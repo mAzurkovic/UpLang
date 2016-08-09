@@ -25,11 +25,6 @@ public class up {
 		fileRead = getFile(args[0]);
 		lexed = lex(fileRead);
 		parser(lexed);
-
-		ScriptEngineManager mgr = new ScriptEngineManager();
-    	ScriptEngine engine = mgr.getEngineByName("JavaScript");
-    	String foo = "40+2";
-    	System.out.println(engine.eval("40+2"));
 	}
 
 /**
@@ -37,10 +32,17 @@ public class up {
  *                               	 PARSER
  * ============================================================================
  */
-	private static void parser(List<String> tokenValues) {
+	private static void parser(List<String> tokenValues) throws Exception {
+		ScriptEngineManager manager = new ScriptEngineManager();
+		ScriptEngine engine = manager.getEngineByName("js");
+
 		String printAns = new String();
+		String expr = new String();
+		String currString = new String();
+
 		for (int i = 0; i < tokenValues.size(); i++) {
 			// Print function:
+			currString = tokenValues.get(i);
 			if (tokenValues.get(i) == "PRINT") {
 				String value = tokenValues.get(i + 1);
 				// Define start and end indexes of value that needs to be printed
@@ -49,6 +51,15 @@ public class up {
 				printAns = value.substring(startIndex, endIndex);
 				// Execute intended PRINT command
 				System.out.println(printAns.replaceAll("\"", ""));
+			}
+
+			if (tokenValues.get(i).contains("EXPR")) {
+				int startIndex = currString.indexOf(":") + 1;
+				int endIndex = currString.length();
+				expr = currString.substring(startIndex, endIndex);
+				
+				System.out.println(engine.eval(expr));
+				expr = "";
 			}
 		}
 	}
