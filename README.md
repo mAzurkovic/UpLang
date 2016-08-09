@@ -20,3 +20,8 @@ For example, say we saved our `Hello, World!` program to `hello.up`. To run the 
 $ java up hello.up
 Hello, World!
 ```
+
+## AVAILABLE FUNCTIONS
+As of now, these are the available functions for UpLang.
+
+* `PRINT <value>`: The `PRINT` function simply prints the passed string/other value to the console.

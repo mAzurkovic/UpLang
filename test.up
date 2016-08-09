@@ -1,2 +1,7 @@
-PRINT "hello world"
-PRINT "mattias zurkovic"
+PRINT "Hello World"
+PRINT "Gook?"
+PRINT "Hello World"
+PRINT "Gook?"
+PRINT 3 + 2
+33
+3 + 2

@@ -1,77 +1,131 @@
 import java.io.*;
 import java.util.*;
+import java.util.Scanner;
 
 public class up {
 
 	// Public variables and usages.
 	public static String upMessage = "<UpLang> Message: ";
 
-	//**********************************************//
-	//				Initializer Method				//
-	//**********************************************//
+/**
+ * ============================================================================
+ *                                INITIALIZE
+ * ============================================================================
+ */
 	public static void main(String[] args) {
-		String ret = getFile(args[0]); // Lexical analysis gets called from within getFile() method
+		//String ret = getFile(args[0]); // Lexical analysis gets called from within getFile() method
+		// lexed = lex(ret);
+		// String content = new Scanner(new File(args[0])).useDelimiter("\\Z").next();
+
+		List<String> fileRead = new ArrayList<String>();
 		List<String> lexed = new ArrayList<String>();
-		lexed = lex(ret);
+		
+		fileRead = getFile(args[0]);
+		lexed = lex(fileRead);
 		parser(lexed);
 	}
 
+/**
+ * ============================================================================
+ *                               	 PARSER
+ * ============================================================================
+ */
 	private static void parser(List<String> tokenValues) {
 		for (int i = 0; i < tokenValues.size(); i++) {
+			// Print function:
 			if (tokenValues.get(i) == "PRINT") {
-				System.out.println(tokenValues.get(i + 1));
+				// Variable acts as a staging place to remove keywords from the lex values.
+				String interm = tokenValues.get(i + 1).replaceAll("STRING:", "");
+			 	String printVal = interm.replaceAll("\"", "");
+				// Execute intended PRINT command
+				System.out.println(printVal);
 			}
 		}		
 	}
 
-	//**********************************************//
-	//				Lexical Analysis 				//
-	//**********************************************//
-	private static List<String> lex(String line) {
+/**
+ * ============================================================================
+ *                            	LEXICAL ANALYSIS
+ * ============================================================================
+ */
+	private static List<String> lex(List<String> fileContents) {
+		// String line
+		String currLine = new String();
 		String tok = new String();
 		String string = new String();
+		String expression = new String();
+
+		char currChar;
+
 		boolean findString = false;
-		boolean quote = false;
+		boolean findNum = false;
+		boolean isExpression = false;
+
 		List<String> tokens = new ArrayList<String>();
 
-		for (int i = 0; i < line.length(); i++) {
-			char currTok = line.charAt(i);
 
-			if (currTok == ' ') {
-				if (!findString) { currTok = Character.MIN_VALUE; }
-				else { currTok = ' '; }
-			}
+		for (int n = 0; n < fileContents.size(); n++) {
+			currLine = fileContents.get(n);
+			// Reset token value at start of a new line of code
+			tok = "";
+			isExpression = false;
+			for (int i = 0; i < currLine.length(); i++) {
+				currChar = currLine.charAt(i);
+				tok += currChar;
 
-			tok += currTok;
-
-			if (tok.equals("PRINT")) {
-				tokens.add("PRINT");
-				tok = "";
-			} 
-
-			if (currTok == '"') {
-				if (!findString) { findString = true; }
-				else if (findString) {
-					tokens.add("STRING:" + string + "\"");
-					findString = false;
-					string = "";
+				if (tok.matches(" ")) {
+					// Remove spaces
+					if (findString) { tok = " "; }
+					// However do not remove if spaces are a part of string
+					else if (!findString) { tok = ""; }
+				} else if (tok.equals("PRINT")) {
+					tokens.add("PRINT");
+					tok = "";
+				} else if (tok.equals("\"")) {
+					if (!findString) { findString = true; }
+					else if (findString) { 
+						findString = false; 
+						tokens.add("STRING:" + string + "\"");
+						string = "";
+					}
+				} else if (findString) {
+					string += tok;
+					tok = "";
+				} else if (tok.matches("[0-9]+")) {
+					expression += tok;
+					tok = "";
+				} else if (tok.matches("[/*+-]")) {
+					isExpression = true;
+					expression += tok;
 					tok = "";
 				}
-				
-			} else if (findString) {
-				string += tok;
-				tok = "";
+
 			}
+
+			if (isExpression && expression.length() > 0) {
+				// System.out.println("EXPR:" + expression);
+				tokens.add("EXPR:" + expression);
+				expression = "";
+			} else if (!isExpression && expression.length() > 0) {
+				// System.out.println("NUM:" + expression);
+				tokens.add("NUM:" + expression);
+				expression = "";
+			}
+
 		}
+		// System.out.println(tokens);
 		return tokens;
 	}
 
-	//**********************************************//
-	//		 	  Retreving File Contents 	     	//
-	//**********************************************//
-	private static String getFile(String fileName) {
+/**
+ * ============================================================================
+ *                            GRAB FILE CONTENTS
+ * ============================================================================
+ */
+	private static List<String> getFile(String fileName) {
 		String file = new String();
 		String line = null;
+		List<String> fileContents = new ArrayList<String>();
 		try {
             // FileReader reads text files in the default encoding.
             FileReader fileReader = new FileReader(fileName);
@@ -80,7 +134,8 @@ public class up {
             BufferedReader bufferedReader = new BufferedReader(fileReader);
 
             while((line = bufferedReader.readLine()) != null) {
-            	file += line;
+            	// file += line;
+            	fileContents.add(line);
             }   
             // Always close files.
             bufferedReader.close();
@@ -95,7 +150,7 @@ public class up {
             System.out.println(
                 "Error reading file '" + fileName + "'");      
         }
-        return file;
+        return fileContents;
 	}
 
 }
