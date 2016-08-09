@@ -45,6 +45,9 @@ public class up {
 			currString = tokenValues.get(i);
 			if (tokenValues.get(i) == "PRINT") {
 				String value = tokenValues.get(i + 1);
+				// Check if the value that needs to be printed is a number/expression, let
+				// expression handeler do the job...
+				if (value.contains("EXPR") || value.contains("[0-9]+")) { continue; }
 				// Define start and end indexes of value that needs to be printed
 				int startIndex = value.indexOf(":") + 1;
 				int endIndex = value.length();
@@ -53,12 +56,14 @@ public class up {
 				System.out.println(printAns.replaceAll("\"", ""));
 			}
 
+			// Expression and number handling
 			if (tokenValues.get(i).contains("EXPR")) {
 				int startIndex = currString.indexOf(":") + 1;
 				int endIndex = currString.length();
 				expr = currString.substring(startIndex, endIndex);
-				
-				System.out.println(engine.eval(expr));
+				if (tokenValues.get(i - 1) == "PRINT") {
+					System.out.println(engine.eval(expr));
+				}
 				expr = "";
 			}
 		}
