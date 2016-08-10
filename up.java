@@ -16,9 +16,6 @@ public class up {
  */
 	public static void main(String[] args) throws Exception {
 		//String ret = getFile(args[0]); // Lexical analysis gets called from within getFile() method
-		// lexed = lex(ret);
-		// String content = new Scanner(new File(args[0])).useDelimiter("\\Z").next();
-
 		List<String> fileRead = new ArrayList<String>();
 		List<String> lexed = new ArrayList<String>();
 
@@ -80,12 +77,14 @@ public class up {
 		String tok = new String();
 		String string = new String();
 		String expression = new String();
+		String variable = new String();
 
 		char currChar;
 
 		boolean findString = false;
 		boolean findNum = false;
 		boolean isExpression = false;
+		boolean isVar = false;
 
 		List<String> tokens = new ArrayList<String>();
 
@@ -126,6 +125,22 @@ public class up {
 					tok = "";
 				}
 
+				if (tok.matches("VAR")) {
+					isVar = true;
+				} else if (tok.matches("=")) {
+					isVar = false;
+					tokens.add("VARIABLE:" + variable);
+					tokens.add("EQL");
+					variable = "";
+					tok = "";
+				}
+
+				if (isVar) {
+					variable += tok;
+					tok = "";
+					if (variable.matches("VAR")) { variable = ""; }
+				}
+
 			}
 
 			if (isExpression && expression.length() > 0) {
@@ -139,7 +154,7 @@ public class up {
 			}
 
 		}
-		// System.out.println(tokens);
+		System.out.println(tokens);
 		return tokens;
 	}
 
