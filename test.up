@@ -3,5 +3,6 @@ PRINT "Hello World"
 PRINT 3 * 2 + 2 / 11
 PRINT "Java, C, RoR, JavaScript"
 PRINT 63
+VAR pooker = 2 * 3
 VAR test = "Hello"
-VAR goKK = "DDDD"
+VAR bokkok = 2

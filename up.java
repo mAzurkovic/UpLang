@@ -8,6 +8,8 @@ public class up {
 
 	// Public variables and usages.
 	public static String upMessage = "<UpLang> Message: ";
+	// The dictionary that holds variable information (key = variable name, value = value)
+	public static Map<String, String> varMap = new HashMap<String, String>();
 
 /**
  * ============================================================================
@@ -36,6 +38,8 @@ public class up {
 		String printAns = new String();
 		String expr = new String();
 		String currString = new String();
+		String varName = new String();
+		String varValue = new String();
 
 		for (int i = 0; i < tokenValues.size(); i++) {
 			// Print function:
@@ -63,7 +67,29 @@ public class up {
 				}
 				expr = "";
 			}
+
+			if (currString.contains("VARIABLE")) {
+				varName = currString.substring(9, currString.length());
+				varValue = tokenValues.get(i + 2);
+
+				// Parse and format variable data types
+				if (varValue.contains("NUM:")) {
+					varMap.put(varName, varValue.substring(4, varValue.length()));	
+				} else if (varValue.contains("EXPR:")) {
+					// HashMap needs to have String obj. passed, turn computed value to string, and then back
+					String shorten = varValue.substring(5, varValue.length());
+					Object ans = engine.eval(shorten);
+					String stringAns = "\"" + ans + "\"";
+					varMap.put(varName, stringAns.replaceAll("\"", ""));	
+				} else if (varValue.contains("STRING:")) {
+					varMap.put(varName, varValue.substring(7, varValue.length()));	
+				} else { // ****
+					varMap.put(varName, varValue);	
+				}
+			}
 		}
+
+		System.out.println(varMap);
 	}
 
 /**
