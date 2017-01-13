@@ -1,4 +1,3 @@
 PRINT "Hello World"
 VAR test = "Hello"
 VAR bokkok = 2
-test
