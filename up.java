@@ -21,6 +21,10 @@ public class up {
 		List<String> fileRead = new ArrayList<String>();
 		List<String> lexed = new ArrayList<String>();
 
+		Lexer lex = new Lexer();
+
+		System.out.println(lex.token);
+
 		fileRead = getFile(args[0]);
 		lexed = lex(fileRead);
 		parser(lexed);
@@ -74,17 +78,17 @@ public class up {
 
 				// Parse and format variable data types
 				if (varValue.contains("NUM:")) {
-					varMap.put(varName, varValue.substring(4, varValue.length()));	
+					varMap.put(varName, varValue.substring(4, varValue.length()));
 				} else if (varValue.contains("EXPR:")) {
 					// HashMap needs to have String obj. passed, turn computed value to string, and then back
 					String shorten = varValue.substring(5, varValue.length());
 					Object ans = engine.eval(shorten);
 					String stringAns = "\"" + ans + "\"";
-					varMap.put(varName, stringAns.replaceAll("\"", ""));	
+					varMap.put(varName, stringAns.replaceAll("\"", ""));
 				} else if (varValue.contains("STRING:")) {
-					varMap.put(varName, varValue.substring(7, varValue.length()));	
+					varMap.put(varName, varValue.substring(7, varValue.length()));
 				} else { // ****
-					varMap.put(varName, varValue);	
+					varMap.put(varName, varValue);
 				}
 			}
 		}
@@ -178,7 +182,6 @@ public class up {
 				tokens.add("NUM:" + expression);
 				expression = "";
 			}
-
 		}
 		System.out.println(tokens);
 		return tokens;
