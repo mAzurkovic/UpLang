@@ -1,9 +1,11 @@
-# UpLang Release 0.0.x
+# UpLang
 
-## INTRODUCTION
+> Development Release 0.0.x
+
+## Introduction
 Welcome to the code base of UpLang! Here are listed release notes for new versions for the project, tips on the language, how to install it, and much more.
 
-## ABOUT
+## About
 UpLang is a really light-weight programming language based on BASIC syntax. It was initially created as a fun side-project by Mattias Zurkovic. As of now, the written UpLang program is translated to Java code, witch then gets compiled through the JVM.
 
 ## Hello, World!
@@ -12,7 +14,7 @@ As mentioned previosly, UpLang has very similar syntax to BASIC code. However, i
 PRINT "Hello, World!"
 ```
 
-## RUNNING A PROGRAM
+## Running a Program
 Once you have written your .up UpLang program file you need to install the UpLand translator. To do this, you need to have the source file and compile it. Once that is compiled and binded globally, run it as a Java file and pass your `.up` program file as the first and only command line argument. This will translate the UpLang code and get compiled and executed!
 
 For example, say we saved our `Hello, World!` program to `hello.up`. To run the peice of code, we would pop open our terminal and enter the following:
@@ -21,7 +23,7 @@ $ java up hello.up
 Hello, World!
 ```
 
-## AVAILABLE FUNCTIONS
+## Functions
 As of now, these are the available functions for UpLang.
 
 * `PRINT <value>`: The `PRINT` function simply prints the passed string/other value to the console.

@@ -21,6 +21,7 @@ public class up {
 		List<String> fileRead = new ArrayList<String>();
 		List<String> lexed = new ArrayList<String>();
 
+		// Lexer object
 		Lexer lexer = new Lexer();
 
 		fileRead = getFile(args[0]);
