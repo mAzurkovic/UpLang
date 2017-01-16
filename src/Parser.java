@@ -4,6 +4,12 @@ import java.util.Scanner;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptEngine;
 
+/**
+ * ============================================================================
+ *                                PARSER CLASS
+ * ============================================================================
+ */
+
 public class Parser {
 
   public static Map<String, String> varMap = new HashMap<String, String>();
