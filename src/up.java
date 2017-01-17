@@ -19,9 +19,8 @@ public class up {
 		List<String> fileRead = new ArrayList<String>();
 		List<String> lexed = new ArrayList<String>();
 
-		// Lexer object
+		// Init objects
 		Lexer lexer = new Lexer();
-		// Parser object
 		Parser parser = new Parser();
 
 		fileRead = getFile(args[0]);
